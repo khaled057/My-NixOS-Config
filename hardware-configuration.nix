@@ -19,11 +19,6 @@
       fsType = "ext4";
     };
 
-  fileSystems."/home" =
-    { device = "/dev/disk/by-label/NIXOS_HOME";
-      fsType = "ext4";
-    };
-
   fileSystems."/boot" =
     { device = "/dev/disk/by-label/NIXOS_BOOT";
       fsType = "vfat";

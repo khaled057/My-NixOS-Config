@@ -2,9 +2,9 @@
   description = "My NixOS Config" ;
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/5d0f6be1c3cebacc3e817a18a44a3ac89ff66109";
+    nixpkgs.url = "github:nixos/nixpkgs/release-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager/release-25.11";
+    home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     nixos-vfio.url = "github:j-brn/nixos-vfio";

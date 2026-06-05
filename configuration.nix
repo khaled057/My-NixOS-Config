@@ -9,17 +9,24 @@ imports =
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   # Optimizing the store with every build
   nix.settings.auto-optimise-store = true;
+  # Limiting nix build jobs to avoid out of memory situations
+  nix.settings = {
+    cores = 2;
+    max-jobs = 1;
+}; 
   # Garbage Collection of old generations
   nix.gc = {
   automatic = true;
   dates = "weekly";
   options = "--delete-older-than 7d";
 };
+  # A problem with building python 3.12 a workaround is found
+  documentation.doc.enable = false;
   # Boot loader and some stuff.
    boot = {
    #kernelParams = [ "quiet" ];
    # By default, the latest LTS linux kernel is installed 
-   kernelPackages = pkgs.linuxPackages_latest; # The linux kernel to boot with
+   #kernelPackages = pkgs.linuxPackages_latest; # The linux kernel to boot with
    supportedFilesystems = [ "nfs" ]; # to have NFS support
    loader = {
    timeout = 1;
@@ -84,9 +91,9 @@ imports =
   nixpkgs.config.allowUnfreePredicate = pkg:
   builtins.elem (lib.getName pkg)
   [
-    "nvidia-x11"
+   /* "nvidia-x11"
     "nvidia-settings"
-    "nvidia-persistenced"
+    "nvidia-persistenced"*/
     "unrar"
   ];
   

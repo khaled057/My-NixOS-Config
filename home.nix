@@ -13,7 +13,7 @@
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [ 
     wl-clipboard
-    steam-devices-udev-rules
+    #steam-devices-udev-rules
     android-tools
     dnsmasq
     htop
@@ -27,24 +27,21 @@
     file-roller
     mesa-demos
     # support both 32-bit and 64-bit applications
-    wineWow64Packages.stable
+    #wineWow64Packages.stable
     # winetricks (all versions)
-    winetricks
+    #winetricks
     # Desktop apps
     libreoffice-fresh
     librewolf
-    brave
     distroshelf
-    protonvpn-gui
+    proton-vpn
     waydroid-helper
     pwvucontrol
     evince
     tauon
-    blueberry
-    bitwarden-desktop
     mars-mips
     video-downloader
-    logseq
+    #logseq
     gnome-pomodoro
   ];
   # NetworkManager applet
@@ -120,8 +117,8 @@
   };
   # MPV
   programs.mpv.enable = true;
-  # Swww
-  services.swww.enable = true; 
+  # Awww
+  services.awww.enable = true; 
   # wl-clip-persist
   services.wl-clip-persist.enable = true;
   # Swaync (Notification daemon)
@@ -178,12 +175,12 @@
   };
   };*/
   # Lutris
-  programs.lutris = {
+  /*programs.lutris = {
     enable = true;
     package = pkgs.lutris-free;
     defaultWinePackage = pkgs.proton-ge-bin;
     protonPackages = [ pkgs.proton-ge-bin ]; # The default Compatiblity layer to use.
-  };
+  };*/
   # Bash
   programs.bash.enable = true;
   programs.bash.shellAliases = {
@@ -216,6 +213,7 @@
   gtk = {
    enable = true;
    colorScheme = "dark";
+   gtk4.theme = config.gtk.theme;
    theme = {
     name = "Flat-Remix-GTK-Blue-Dark";
     package = pkgs.flat-remix-gtk;
@@ -255,6 +253,7 @@
   # Create XDG User Directories
   xdg.userDirs.enable = true; 
   xdg.userDirs.createDirectories = true; # Whether to enable automatic creation of the XDG user directories.
+  xdg.userDirs.setSessionVariables = true; 
   
   # Distrobox
   programs.distrobox.enable = true;
@@ -289,7 +288,7 @@
      workspaceAutoBackAndForth = true;
      keybindings = let
         filemanager = "thunar"; 
-        browser = "brave";
+        browser = "librewolf";
     in lib.mkOptionDefault {
       "${modifier}+q" = "exec ${terminal}";
       "${modifier}+c" = "kill";
@@ -400,7 +399,7 @@
         programs.ssh = {
           enable = true;
           enableDefaultConfig = false;
-          matchBlocks = {
+          settings = {
             "home-server" = {
               hostname = "192.168.1.60";
               user = "khaled";
@@ -413,12 +412,13 @@
   # Declartive Flatpaks
   # By default Flathub repo is added.
     services.flatpak.packages = [
+   "com.logseq.Logseq"
    "it.mijorus.gearlever"
    "com.github.tchx84.Flatseal"
    "network.loki.Session"
-   "com.discordapp.Discord"
-   "com.valvesoftware.Steam"
-   "com.valvesoftware.Steam.CompatibilityTool.Proton-GE"
+   #"com.discordapp.Discord"
+   #"com.valvesoftware.Steam"
+   #"com.valvesoftware.Steam.CompatibilityTool.Proton-GE"
    "io.github.jonmagon.kdiskmark"
    "com.heroicgameslauncher.hgl"
   ];

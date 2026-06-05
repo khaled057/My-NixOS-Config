@@ -58,7 +58,7 @@
   # Thunar
   programs.thunar.enable = true;
   programs.xfconf.enable = true;
-  programs.thunar.plugins = with pkgs.xfce; [
+  programs.thunar.plugins = with pkgs; [
   thunar-archive-plugin # Requires an Archive manager like file-roller, ark, etc
   thunar-volman
 ];
@@ -90,7 +90,7 @@
     xserver.videoDrivers = 
     [
       "modesetting"
-      "nvidia"
+      #"nvidia"
     ];
   };
   hardware.graphics = {
@@ -101,7 +101,7 @@
       vpl-gpu-rt             # oneVPL (QSV) runtime
     ];
   };
-  hardware.nvidia.open = true; # Use Nvidia Open-source Modules
+  /*hardware.nvidia.open = true; # Use Nvidia Open-source Modules
   hardware.nvidia.modesetting.enable = true; # Enable Nvidia Modesetting for Wayland
   hardware.nvidia.prime = {
     offload = { 
@@ -110,7 +110,7 @@
   };
     intelBusId = "PCI:0:2:0";
     nvidiaBusId = "PCI:1:0:0";
-  };
+  };*/
   programs.gamemode.enable = true;
   # Printing Support
   services.ipp-usb.enable = true;
