@@ -49,7 +49,6 @@ in
       "/dev/kvmfr0"
       "/dev/kvmfr1"
       "/dev/kvmfr2"
-      "/dev/shm/scream"
       "/dev/shm/looking-glass"
       "/dev/null"
       "/dev/full"
