@@ -184,9 +184,9 @@
   # Bash
   programs.bash.enable = true;
   programs.bash.shellAliases = {
-  rb="doas nixos-rebuild switch 2>&1 | nom";
-  conf="doas vim /etc/nixos/configuration.nix";
-  u="doas nix flake update --flake /etc/nixos && doas nixos-rebuild switch 2>&1 | nom && flatpak update && doas waydroid upgrade";
+  rb="doas nixos-rebuild switch --flake ~/My-NixOS-Config 2>&1 | nom";
+  #conf="doas vim /etc/nixos/configuration.nix";
+  u="doas nix flake update --flake ~/My-NixOS-Config && doas nixos-rebuild switch --flake ~/My-NixOS-config 2>&1 | nom && flatpak update && doas waydroid upgrade";
   rm="rm -i";
   server="doas mount -t nfs4 192.168.1.60:/ Home-Server";
   fastfetch="fastfetch -l nixos_old";
