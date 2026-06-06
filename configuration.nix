@@ -27,6 +27,8 @@ imports =
    #kernelParams = [ "quiet" ];
    # By default, the latest LTS linux kernel is installed 
    #kernelPackages = pkgs.linuxPackages_latest; # The linux kernel to boot with
+   # Enable SysRq shortcuts can be used to trigger a more graceful reboot
+   kernel.sysctl."kernel.sysrq" = 1;
    supportedFilesystems = [ "nfs" ]; # to have NFS support
    loader = {
    timeout = 1;

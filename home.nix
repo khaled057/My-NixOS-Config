@@ -43,6 +43,7 @@
     video-downloader
     #logseq
     gnome-pomodoro
+    simple-scan
   ];
   # NetworkManager applet
   services.network-manager-applet.enable = true;
