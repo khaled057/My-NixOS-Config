@@ -1,33 +1,28 @@
-{  lib, pkgs, nixpkgs-unstable, autovirt,...}:
-/*# Applying a patch for QEMU to Hide VM from Anti-Cheat
+{  lib, pkgs, nixpkgs-unstable,...}:
+# Applying a patch for QEMU to Hide VM from Anti-Cheat
 let
   unstable = nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system};
-  edk2-anti = unstable.edk2.overrideAttrs (old: {
-     src = pkgs.fetchFromGitHub {
+  edk2-anti = pkgs.edk2.overrideAttrs (old: {
+   /*  src = pkgs.fetchFromGitHub {
      owner = "tianocore";
      repo = "edk2";
-     rev = "edk2-stable202605";
+     rev = "edk2-stable202602";
      hash = "sha256-rY48qHjca8nA9uMOyc8cqGIwkYHfWxCbQIKIomtCIK0=";
-  };
-    patches =  [
-     (pkgs.fetchpatch {
-     url = "https://raw.githubusercontent.com/Scrut1ny/AutoVirt/main/patches/EDK2/Archive/Intel-edk2-stable202602.patch";
-     hash = "sha256-+8QvYc2D8qim/qkx6LO/Wm3ORv31nBYVntX+rhR8H2I=";
-  })
-];
+  };*/
+    patches =  [./Intel-edk2-stable202602.patch];
 });
  
-  qemu-anti = unstable.qemu.overrideAttrs (old: {    
-      edk2 = edk2-anti;
-      patches =  [
-      (pkgs.fetchpatch {
-      url = "https://raw.githubusercontent.com/Scrut1ny/AutoVirt/main/patches/QEMU/Archive/Intel-v10.2.0.patch";
-      hash = "sha256-BQ8a3TzkbkmJfmwvl/2AV630+fzHWIvQiH4g82J1hMA=";
-  })
-];
+  qemu-anti = pkgs.qemu.overrideAttrs (old: {    
+     src = pkgs.fetchFromGitHub {
+     owner = "qemu";
+     repo = "qemu";
+     tag = "v11.0.0";
+     hash = "sha256-rY48qHjca8nA9uMOyc8cqGIwkYHfWxCbQIKIomtCIK0=";
+    };
+     edk2 = edk2-anti;
 });
 in
-*/
+
 {
 
 
@@ -41,6 +36,7 @@ in
     libvirtd = {
      enable = true;
       qemu = {
+       package = qemu-anti;
        swtpm.enable = true; # Allow Qemu to use swtpm to create Emulated TPM
        vhostUserPackages = [ pkgs.virtiofsd ]; # Packages containing out-of-tree vhost-user drivers.
   };
