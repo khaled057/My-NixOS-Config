@@ -10,10 +10,10 @@ imports =
   # Optimizing the store with every build
   nix.settings.auto-optimise-store = true;
   # Limiting nix build jobs to avoid out of memory situations
-  nix.settings = {
+/*  nix.settings = {
     cores = 2;
     max-jobs = 1;
-}; 
+};*/ 
   # Garbage Collection of old generations
   nix.gc = {
   automatic = true;
