@@ -41,7 +41,6 @@
     tauon
     mars-mips
     video-downloader
-    #logseq
     gnome-pomodoro
     simple-scan
   ];
