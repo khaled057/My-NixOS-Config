@@ -1,9 +1,11 @@
-{config, pkgs, lib, ...}: {
+{config, pkgs, lib, inputs,...}: {
   imports = [
     ./waydroid.nix
     ./fontconfig.nix
     ./vfio.nix
+    inputs.nixos-facter-modules.nixosModules.facter
   ];
+ facter.reportPath = ./facter.json;
  security.polkit.enable = true;
  security.rtkit.enable = true;
  services.getty = {

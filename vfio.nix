@@ -46,7 +46,7 @@ in*/
        swtpm.enable = true; # Allow Qemu to use swtpm to create Emulated TPM
        vhostUserPackages = [ pkgs.virtiofsd ]; # Packages containing out-of-tree vhost-user drivers.
   };
-    deviceACL = [
+    /*deviceACL = [
       "/dev/kvm"
       "/dev/kvmfr0"
       "/dev/kvmfr1"
@@ -63,9 +63,9 @@ in*/
       "/dev/rtc"
       "/dev/hpet"
       "/dev/vfio/vfio"
-    ];
+    ];*/
   };
-  vfio = {
+  /*vfio = {
     enable = true;
     IOMMUType = "intel";
     devices = [
@@ -83,7 +83,7 @@ in*/
         mode = "0660";
       };
     };
-  };
+  };*/
 };
   boot.blacklistedKernelModules = [
     "nvidia"

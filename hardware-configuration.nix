@@ -25,13 +25,16 @@
       options = [ "fmask=0077" "dmask=0077" ];
     };
     # Zram 
-    zramSwap.enable = true; # Creates a zram block device and uses it as a swap device
-    systemd.oomd.enable = true; # userspace OOM killer
+    zramSwap = {
+     enable = true; # Creates a zram block device and uses it as a swap device
+     memoryPercent = 80;
+};
+   systemd.oomd.enable = true; # userspace OOM killer
     # Swap file
-    swapDevices = [{
+    /*swapDevices = [{
      device = "/var/lib/swapfile";
      size = 8*1024; # 8 GiB
-  }];
+  }];*/
 
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";

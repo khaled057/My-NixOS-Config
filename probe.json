@@ -1,0 +1,26 @@
+{
+  "cpu": "intel",
+  "acpi": {
+    "oem_id": "LENOVO",
+    "oem_table_id": "CB-01   ",
+    "oem_table_id_hex": "0x20202031302d4243",
+    "oem_revision": "0x00000001",
+    "creator_id": "ACPI",
+    "creator_id_hex": "0x49504341",
+    "creator_revision": "0x00040000",
+    "pm_profile": 2
+  },
+  "bios": {
+    "vendor": "LENOVO",
+    "version": "NECN50WW",
+    "date": "01/16/2026",
+    "revision": "0x00010000"
+  },
+  "smbios": {
+    "processor_manufacturer": "Intel(R) Corporation"
+  },
+  "battery": {
+    "present": true,
+    "ssdt_path": "/sys/firmware/acpi/tables/DSDT"
+  }
+}
