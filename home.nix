@@ -34,7 +34,6 @@
     libreoffice-fresh
     librewolf
     distroshelf
-    proton-vpn
     waydroid-helper
     pwvucontrol
     evince

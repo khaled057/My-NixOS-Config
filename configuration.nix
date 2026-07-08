@@ -22,16 +22,11 @@ imports =
 };
   # A problem with building python 3.12, a workaround is found
   documentation.doc.enable = false;
-  # Use a NixOS specialisation so the power-hungry params
-  # only apply when you boot into this entry
-  # specialisation.vm-antidetection.configuration = {
-  #  barelyMetal.kernel.enable = true;
-  #};
   # Boot loader and some stuff.
    boot = {
    #kernelParams = [ "quiet" ];
    # By default, the latest LTS linux kernel is installed 
-   kernelPackages = pkgs.linuxPackages_latest; # The linux kernel to boot with
+   #kernelPackages = pkgs.linuxPackages_latest; # The linux kernel to boot with
    # Enable SysRq shortcuts can be used to trigger a more graceful reboot
    kernel.sysctl."kernel.sysrq" = 1;
    supportedFilesystems = [ "nfs" ]; # to have NFS support
@@ -94,7 +89,6 @@ imports =
      pciutils
      nvme-cli
      cdrtools
-     inputs.barely-metal.packages.${pkgs.system}.probe
    ];
 
   # Allow some unfree packages

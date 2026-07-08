@@ -1,61 +1,5 @@
 {
   "nodes": {
-    "autovirt": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1772738088,
-        "narHash": "sha256-rmUfGWxz0Z2Lwmdvyt5oHNOzZGndyusWwu7TnFq1qC4=",
-        "owner": "Scrut1ny",
-        "repo": "AutoVirt",
-        "rev": "00ec7153c06184a36f028559fec3ae0e6051cbf6",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Scrut1ny",
-        "repo": "AutoVirt",
-        "type": "github"
-      }
-    },
-    "barely-metal": {
-      "inputs": {
-        "autovirt": "autovirt",
-        "edk2-src": "edk2-src",
-        "nixpkgs": [
-          "nixpkgs-unstable"
-        ],
-        "qemu-src": "qemu-src"
-      },
-      "locked": {
-        "lastModified": 1773477705,
-        "narHash": "sha256-QaXYrqDduSotTKhasYoqkSOrq4Xu5P2ZzkpWzqsRg8U=",
-        "owner": "Dreaming-Codes",
-        "repo": "BarelyMetal",
-        "rev": "f16b6e6018f2dfd1891f6a8b21f19c49de2b3067",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Dreaming-Codes",
-        "repo": "BarelyMetal",
-        "type": "github"
-      }
-    },
-    "edk2-src": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1770983746,
-        "narHash": "sha256-rdRn1waCZ9h83cZR5cQFLNuvUKMS236PjuDQ0WHNlGs=",
-        "owner": "tianocore",
-        "repo": "edk2",
-        "rev": "b7a715f7c03c45c6b4575bf88596bfd79658b8ce",
-        "type": "github"
-      },
-      "original": {
-        "owner": "tianocore",
-        "ref": "edk2-stable202602",
-        "repo": "edk2",
-        "type": "github"
-      }
-    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -63,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1781319724,
-        "narHash": "sha256-ZGuxexEMo4Xv28KJ0dX/m/PHN4oZIOnxHZpNTyrvx4M=",
+        "lastModified": 1783221248,
+        "narHash": "sha256-ESQnuNHEDChsB4IxoLRhscVahqkDWkTb+qdIz8euYt4=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "8355f0a16b2dbb06a97959a918af5b239bbe05ae",
+        "rev": "af2beae5f0fae0a4310cc0e6aef2572f56090353",
         "type": "github"
       },
       "original": {
@@ -93,28 +37,13 @@
         "type": "github"
       }
     },
-    "nixos-facter-modules": {
-      "locked": {
-        "lastModified": 1773858690,
-        "narHash": "sha256-oW0/lC0oRG5H5LaK6Rmh9L1wmkn9TbenM4bXwnIEDKA=",
-        "owner": "numtide",
-        "repo": "nixos-facter-modules",
-        "rev": "139dcef4dfc97009629c445806f197883351ab4a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "nixos-facter-modules",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1781420341,
-        "narHash": "sha256-9EIURr2ROT3t6yha8yv1gxDwNcr/wv0clf3Uqiq5ReI=",
+        "lastModified": 1783516781,
+        "narHash": "sha256-ws8l2tNUczcxKgFV4jqZE6dJkAI5vM9GRhPN//GPapM=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "2d3d1452a662e6b439f66565c598dbd63886d185",
+        "rev": "866dd157fa7e2a95a7ed0cf9ed740a9e11fec428",
         "type": "github"
       },
       "original": {
@@ -126,11 +55,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1781074563,
-        "narHash": "sha256-md8WlXOlfnIeHeOScMTTHFyf2d6iaTwPl2apR5EQ3P4=",
+        "lastModified": 1783224372,
+        "narHash": "sha256-8i/87eeoqiGE4yOTjwSA3Eh/ziJRQEmd/unYU+K27sk=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9ae611a455b90cf061d8f332b977e387bda8e1ca",
+        "rev": "d407951447dcd00442e97087bf374aad70c04cea",
         "type": "github"
       },
       "original": {
@@ -140,29 +69,10 @@
         "type": "github"
       }
     },
-    "qemu-src": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1766461447,
-        "narHash": "sha256-Ucd7iMQN7bE/IPwc4ZXMIplC0Bo5LTfLY8j34Zze8og=",
-        "owner": "qemu-project",
-        "repo": "qemu",
-        "rev": "698104725efad4b29079d857dfdebbd804e34c99",
-        "type": "gitlab"
-      },
-      "original": {
-        "owner": "qemu-project",
-        "ref": "v10.2.0",
-        "repo": "qemu",
-        "type": "gitlab"
-      }
-    },
     "root": {
       "inputs": {
-        "barely-metal": "barely-metal",
         "home-manager": "home-manager",
         "nix-flatpak": "nix-flatpak",
-        "nixos-facter-modules": "nixos-facter-modules",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable"
       }
