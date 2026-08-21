@@ -1,134 +1,84 @@
-{  lib, pkgs, nixpkgs-unstable,...}:
-# Applying a patch for QEMU to Hide VM from Anti-Cheat
-/*let
-  unstable = nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system};
-  edk2-anti = pkgs.edk2.overrideAttrs (old: {
-     version = "202605";
-     src = pkgs.fetchgit {
-     url = "https://github.com/tianocore/edk2.git"; 
-     rev = "edk2-stable202605";
-     fetchSubmodules = true;
-     hash = "sha256-sUqLocdX7lxN2pEdn84Cjh8pOzYqIeKqO144XhwKA30=";
-  };
-    patches =  [./Intel-edk2-stable202605.patch];
-});
- 
-  qemu-anti = pkgs.callPackage ./qemu-anti.nix {};    
-     #version = "11.0.0";
-     src = pkgs.fetchFromGitHub {
-     owner = "qemu";
-     repo = "qemu";
-     tag = "v11.0.0";
-     hash = "sha256-4FYzPBmnaAfrqqywtKpYFqpzi8Phd64iQZ4qDyNDOoY=";
-    };
-    patches = [
-      ./kvm-hypercall-patching-v11.0.0.patch
-      ./Intel-v11.0.0.patch
-  ];
-     edk2 = edk2-anti;
-});
-in*/
-
-{
-
-
-  virtualisation = {
-  podman = {
+{ pkgs, config, lib, ...}:{
+  myModules.vfio.stealth = {
   enable = true;
-  dockerCompat = true;
+  smbios = {
+    manufacturer = "LENEVO";
+    product = "83GS";
+    biosVendor = "LENOVO";
+    biosVersion = "NECN50WW";
+    biosDate = "01/16/2026";
+    biosRelease = "3.4";
+    baseBoardVersion = "Rev 1.04";
+    baseBoardSerial = "MP2GLVRK";
+    serial = "MP2GLVRK";
+    baseBoardAsset = "baseBoardAsset";
+    baseBoardLocation = "Type2 - Board Chassis Location";
+    onboardDevices = [
+     {
+    designation = "IGD";
+    kind = "Video";
+    instance = 1;
+     } 
+    ];
+    socketPrefix = "U3E1";
+    cache = {
+      l1 = 256;
+      l2 = 2048;
+      l3 = 12288;
+      ecc = 6;
+    };
+    oemStrings = [
+      "Country - .."
+      "Modern Preload"
+      "83GS"
+      "Default string"
+    ];
+    memory = {
+      manufacturer = "Samsung";
+      partNumber = "M425R1GB4PB0-CWMOD";
+      speed = 5600;
+      count = 2;
+    };
+  };
+    disk = {
+    model = "Micron MTFDKCD512QFM-1BD1AABLA    ";
+    serial = "2342444948FC";
+    opticalModel = "HL-DT-ST DVDRAM GH24NSC0";
+    };
+    edid = {
+     manufacturer = "BOE";
+     serial = "103";
+     productCode = "0x00000067";
+     dpi = 141;
+     week = 17;
+     year = 2023;
+    };
+  macPrefix = "2c:f0:5d";  # Peplink OUI
+  hypervVendorId = "GenuineIntel";
+
 };
-  # Enable USB redirection
-  spiceUSBRedirection.enable = true;
-    libvirtd = {
-     enable = true;
-      qemu = {
-       package = pkgs.qemu;
-       swtpm.enable = true; # Allow Qemu to use swtpm to create Emulated TPM
-       vhostUserPackages = [ pkgs.virtiofsd ]; # Packages containing out-of-tree vhost-user drivers.
-  };
-    /*deviceACL = [
-      "/dev/kvm"
-      "/dev/kvmfr0"
-      "/dev/kvmfr1"
-      "/dev/kvmfr2"
-      "/dev/shm/looking-glass"
-      "/dev/null"
-      "/dev/full"
-      "/dev/zero"
-      "/dev/random"
-      "/dev/urandom"
-      "/dev/ptmx"
-      "/dev/kvm"
-      "/dev/kqemu"
-      "/dev/rtc"
-      "/dev/hpet"
-      "/dev/vfio/vfio"
-    ];*/
-  };
-  /*vfio = {
-    enable = true;
-    IOMMUType = "intel";
-    devices = [
-        "10de:25ed"
-        "10de:2291"
-      ];
-  };
-
-   kvmfr = {
-    enable = true;
-    devices = lib.singleton {
-      size = 32;
-      permissions = {
-        group = "kvm";
-        mode = "0660";
-      };
+    # Custom Patched linux Kernel
+  boot.kernelPackages = pkgs.linuxPackagesFor (
+  pkgs.linuxPackages_latest.kernel.overrideAttrs (old: {
+    postPatch = (old.postPatch or "") + config.myModules.vfio.stealth._kernelPostPatch;
+  })
+);
+# QEMU overlay with matching hardware strings
+nixpkgs.overlays = [
+  (final: prev: {
+    qemu-stealth = prev.qemu-stealth.override {
+      edidManufacturer = "BOE";
+      edidSerial = "103";
+      edidProductCode = "0x00000067";
+      edidDpi = 141;
+      edidWeek = 17;
+      edidYear = 2023;
+      acpiOemId = "MSI_NB";
+      acpiOemTableId = "MEGABOOK";
+      diskModel = "Micron MTFDKCD512QFM-1BD1AABLA    ";
+      diskSerial = "2342444948FC";
+      opticalModel = "HL-DT-ST DVDRAM GH24NSC0";
     };
-  };*/
-};
-  boot.blacklistedKernelModules = [
-    "nvidia"
-    "nvidia_drm"
-    "nvidia_modeset"
-    "nvidia_uvm"
-    "nouveau"
-  ];
-
-  programs.virt-manager.enable = true;
-  # Bridge Networks in VMs
-
-  systemd.network = {
-    enable = true;
-    wait-online.enable = false; # so that boot isn't blocked on connectivity that networkd will never provide in the case networkmanager and systemd-networkd will both manage the network.
-
-    netdevs = {
-      # Create the bridge interface
-    "10-br0" = {
-      netdevConfig = {
-        Kind = "bridge";
-        Name = "br0";
-      };
-    };
-  };
-
-    networks = {
-      # Connect the NIC ports to the bridge  
-      "10-enp7s0" = {
-        matchConfig.Name = "enp7s0";
-        networkConfig = {
-          Bridge = "br0";
-        };
-        linkConfig.RequiredForOnline = "enslaved";
-      };
-      
-      # Host networking now lives on bridge
-      "20-br0" = {
-        matchConfig.Name = "br0";
-        networkConfig = {
-          DHCP = "yes";
-          IPv6AcceptRA = true;
-        };
-        linkConfig.RequiredForOnline = "routable";
-      };
-    };
-  };
+  })
+];
 }

@@ -3,7 +3,7 @@
 let
   # IMPORTANT: Find your Intel GPU path with: ls -l /dev/dri/by-path/ | grep pci-.*-render
   # Usually: pci-0000:00:02.0-render (Intel is typically at 00:02.0)
-  intelRenderNode = "/dev/dri/by-path/pci-0000:00:02.0-render";
+  intelRenderNode = "/dev/dri/intel-igpu";
 in
 {
   virtualisation.waydroid.enable = true;

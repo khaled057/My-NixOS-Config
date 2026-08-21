@@ -2,10 +2,16 @@
   imports = [
     ./waydroid.nix
     ./fontconfig.nix
-    ./vfio.nix
+    ./vm.nix
+#    ./vfio.nix
+    ./nix-ld.nix
   ];
  security.polkit.enable = true;
  security.rtkit.enable = true;
+ services.earlyoom = {
+ enable = true; # Whether to enable early out of memory killing.
+ enableNotifications = true; # Send notifications about killed processes via the system d-bus.
+ };
  services.getty = {
   autologinUser = "khaled";
   autologinOnce = true;
@@ -15,22 +21,34 @@
     [[ "$(tty)" == /dev/tty1 ]] && sway
 '';
 
+  programs.nano.enable = false; # disable nano systemwide so vim configuration can apply
+  # Mongodb
+  services.mongodb = {
+  enable = true;
+  package = pkgs.mongodb-ce;
+};
   # Enable Sound
    services.pipewire = { 
     enable = true;
+    extraConfig.pipewire = {
+  "98-crackling-fix" = {
+    "context.properties" = {
+      "default.clock.quantum" = 2048;
+      "default.clock.min-quantum" = 2048;
+      "default.clock.max-quantum" = 8192;
+    };
+  };
+};
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    jack.enable = true;
 };
   # Bluetooth
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = false;
   };
-  # Nix-ld ( run non-nix binaries )
-    programs.nix-ld.enable = true;
-    programs.nix-ld.libraries = with pkgs; [
-  ];
  services.flatpak.enable = true; # Needed for nix-flatpak to work
  systemd.services.home-manager-khaled.serviceConfig.TimeoutStartSec = lib.mkForce "30min"; # because installing a lot of flatpak apps exceeds the default timeout for a systemd service (5 minutes)
  services.gnome.gnome-keyring.enable = true;
@@ -90,7 +108,7 @@
     xserver.videoDrivers = 
     [
       "modesetting"
-      #"nvidia"
+      "nvidia"
     ];
   };
   hardware.graphics = {
@@ -101,7 +119,7 @@
       vpl-gpu-rt             # oneVPL (QSV) runtime
     ];
   };
-  /*hardware.nvidia.open = true; # Use Nvidia Open-source Modules
+  hardware.nvidia.open = true; # Use Nvidia Open-source Modules
   hardware.nvidia.modesetting.enable = true; # Enable Nvidia Modesetting for Wayland
   hardware.nvidia.prime = {
     offload = { 
@@ -110,8 +128,8 @@
   };
     intelBusId = "PCI:0:2:0";
     nvidiaBusId = "PCI:1:0:0";
-  };*/
-  programs.gamemode.enable = true;
+  };
+  programs.gamemode.enable = true; # Gamemode Support
   # Printing Support
   services.ipp-usb.enable = true;
   services.avahi = {

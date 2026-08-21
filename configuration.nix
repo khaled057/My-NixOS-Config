@@ -5,15 +5,16 @@ imports =
       ./hardware-configuration.nix
       ./graphical.nix
     ];
+
   # Enable Flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   # Optimizing the store with every build
   nix.settings.auto-optimise-store = true;
   # Limiting nix build jobs to avoid out of memory situations
-/*  nix.settings = {
-    cores = 2;
-    max-jobs = 1;
-};*/ 
+  nix.settings = {
+    cores = 4;
+    max-jobs = 2;
+}; 
   # Garbage Collection of old generations
   nix.gc = {
   automatic = true;
@@ -35,8 +36,9 @@ imports =
    timeout = 1;
    grub = {
     enable = true;
-    useOSProber = true;
+    useOSProber = false;
     efiSupport = true;
+    splashImage = ./photo.jpg;
     efiInstallAsRemovable = true; # Otherwise /boot/EFI/BOOT/BOOTX64.EFI isn't generated
     devices = ["nodev"];
     extraEntriesBeforeNixOS = false;
@@ -55,7 +57,7 @@ imports =
   networking.networkmanager.enable = true;
 
   # Set your time zone.
-   time.timeZone = "Africa/Egypt";
+   time.timeZone = "Africa/Cairo";
 
  # Doas instead of Sudo
   security.sudo.enable = false;
@@ -89,16 +91,19 @@ imports =
      pciutils
      nvme-cli
      cdrtools
+     ntfs3g
+     nix-search
    ];
 
   # Allow some unfree packages
   nixpkgs.config.allowUnfreePredicate = pkg:
   builtins.elem (lib.getName pkg)
   [
-   /* "nvidia-x11"
+    "nvidia-x11"
     "nvidia-settings"
-    "nvidia-persistenced"*/
+    "nvidia-persistenced"
     "unrar"
+    "mongodb-ce"
   ];
   
   system.stateVersion = "25.11"; # Do NOT Change.

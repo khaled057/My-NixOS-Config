@@ -13,7 +13,7 @@
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [ 
     wl-clipboard
-    #steam-devices-udev-rules
+    steam-devices-udev-rules
     android-tools
     dnsmasq
     htop
@@ -26,10 +26,13 @@
     unrar
     file-roller
     mesa-demos
+    mongosh
+    nodejs
+    wireguard-tools # needed for split tunneling
     # support both 32-bit and 64-bit applications
-    #wineWow64Packages.stable
+    wineWow64Packages.stable
     # winetricks (all versions)
-    #winetricks
+    winetricks
     # Desktop apps
     libreoffice-fresh
     librewolf
@@ -38,10 +41,14 @@
     pwvucontrol
     evince
     tauon
-    mars-mips
     video-downloader
     gnome-pomodoro
     simple-scan
+    waypaper
+    qbittorrent
+    cheese
+    bluejay
+    vesktop
   ];
   # NetworkManager applet
   services.network-manager-applet.enable = true;
@@ -54,10 +61,19 @@
    };
     themeFile = "adwaita_dark";
   };
+  # Setting the default terminal for desktop entries
+  xdg.terminal-exec = {
+    enable = true;
+    settings = {
+      default = [
+        "kitty.desktop"
+      ];
+    };
+  };
   # Vim
   programs.vim = {
     enable = true;
-    defaultEditor = true;
+    defaultEditor = false;
     extraConfig = ''
       nnoremap <F5> :w<CR>:!g++ % -o %< && ./%<<CR>
       set mouse=a
@@ -92,7 +108,7 @@
     };
   };
   # Freetube
-  programs.freetube = {
+   programs.freetube = {
    enable = true;
    settings = {
     enableSearchSuggestions = false;
@@ -102,6 +118,7 @@
     defaultQuality = "360";
     hideUpcomingPremieres = true;
     hideTrendingVideos = true;
+    hideHeaderLogo = true;
     playNextVideo = false;
     hideRecommendedVideos = true;
     hideCommentPhotos = true;
@@ -111,9 +128,8 @@
     useSponsorBlock = true;
     useDeArrowTitles = true;
    };
-  
-  
-  };
+ };
+
   # MPV
   programs.mpv.enable = true;
   # Awww
@@ -132,7 +148,7 @@
     fullscreen = true;
     corner-roundness = 12;
     initial-tool = "brush";
-    output-filename = "~/Pictures/%Y-%m-%d_%H:%M:%S.png";
+    output-filename = "~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png";
   };
   color-palette = {
     palette = [ "#00ffff" "#a52a2a" "#dc143c" "#ff1493" "#ffd700" "#008000" ];
@@ -174,12 +190,12 @@
   };
   };*/
   # Lutris
-  /*programs.lutris = {
+  programs.lutris = {
     enable = true;
-    package = pkgs.lutris-free;
+    package = pkgs.lutris;
     defaultWinePackage = pkgs.proton-ge-bin;
     protonPackages = [ pkgs.proton-ge-bin ]; # The default Compatiblity layer to use.
-  };*/
+  };
   # Bash
   programs.bash.enable = true;
   programs.bash.shellAliases = {
@@ -188,7 +204,7 @@
   u="doas nix flake update --flake ~/My-NixOS-Config && doas nixos-rebuild switch --flake ~/My-NixOS-Config 2>&1 | nom && flatpak update && doas waydroid upgrade";
   rm="rm -i";
   server="doas mount -t nfs4 192.168.1.60:/ Home-Server";
-  fastfetch="fastfetch -l nixos_old";
+  fastfetch="fastfetch -c examples/25 --percent-type 11 --bright-color true";
   hs="TERM=kitty ssh home-server";
   sudo="doas";
     hows-my-gpu = ''
@@ -206,8 +222,6 @@
 
   nvidia-disable = ''sudo rmmod nvidia_drm nvidia_modeset nvidia; echo "NVIDIA drivers removed"; sudo modprobe -i vfio_pci vfio_pci_core vfio_iommu_type1 vfio; echo "VFIO drivers added"; sudo virsh nodedev-detach pci_0000_01_00_0; echo "GPU detached (now vfio ready)"; echo "COMPLETED! (confirm success with hows-my-gpu)"'';
 };
-  # Default Apps
-
   # GTK
   gtk = {
    enable = true;
@@ -221,11 +235,7 @@
     name = "Flat-Remix-Blue-Dark";
     package = pkgs.flat-remix-icon-theme;
    };
-   cursorTheme = {
-    name = "Catppuccin-Mocha-Light-Cursors";
-    package = pkgs.catppuccin-cursors.mochaLight;
   };
-};
   # QT
   qt = {
     enable = true;
@@ -242,11 +252,10 @@
     sway.enable = true; # To let sway use this cursor
     x11 = {
       enable = true;
-      defaultCursor = "Catppuccin-Mocha-Light-Cursors";
     };
-    name = "Catppuccin-Mocha-Light-Cursors";
-    package = pkgs.catppuccin-cursors.mochaLight;
-    size = 34;
+    name = "catppuccin-latte-light-cursors";
+    package = pkgs.catppuccin-cursors.latteLight;
+    size = 24;
   };
 
   # Create XDG User Directories
@@ -261,14 +270,30 @@
   enable = true;
   systemd.variables = ["--all"]; # to make Sway inherit the user environment when launched from TTY
   wrapperFeatures.gtk = true; # Fixes common issues with GTK 3 apps
- # extraSessionCommands = "export WLR_DRM_DEVICES=/dev/dri/by-path/pci-0000:00:02.0-render";
    config = rec {
      modifier = "Mod4";
      menu = "rofi -show drun";
      terminal = "kitty"; 
      defaultWorkspace = "workspace number 1";
+     /*gaps = {
+      inner = 5;
+      #outer = 0;
+      smartGaps = true;
+      smartBorders = "on";
+     };*/
+     colors = {
+       focused = {
+        border = "#FFFFFF";
+        background = "#FFFFFF";
+        text = "#000000";
+        indicator = "#FFFFFF";
+        childBorder = "#FFFFFF";
+       };
+     };
      window = {
        titlebar = false;
+       border = 2;
+       hideEdgeBorders = "smart";
        commands = [
          {
         criteria = { app_id = "kitty";};
@@ -304,6 +329,8 @@
       "${modifier}+Shift+g" = "exec looking-glass-client";
       "${modifier}+v" = "exec cliphist list | rofi -dmenu -display-columns 2 | cliphist decode | wl-copy";
       "${modifier}+Shift+f" = "floating toggle";
+      "${modifier}+Shift+t" = "exec pkexec wg-quick up proton";
+      "${modifier}+Shift+y" = "exec pkexec wg-quick down proton";
       # Screenshot a selection and use satty for other things 
       "Print" = "exec grim -g \"$(slurp)\" - | satty -f -";
       "Scroll_Lock" = "exec ~/Scripts/autoclick.sh";
@@ -415,11 +442,12 @@
    "it.mijorus.gearlever"
    "com.github.tchx84.Flatseal"
    "network.loki.Session"
-   #"com.discordapp.Discord"
-   #"com.valvesoftware.Steam"
-   #"com.valvesoftware.Steam.CompatibilityTool.Proton-GE"
    "io.github.jonmagon.kdiskmark"
-   "com.heroicgameslauncher.hgl"
+   "com.valvesoftware.Steam"
+   "com.valvesoftware.Steam.CompatibilityTool.Proton-GE"
+   "org.mediaharbor.MediaHarbor"
+   "org.libretro.RetroArch"
+   "net.rpcs3.RPCS3"
   ];
 
   home.stateVersion = "25.11"; # Do NOT change
@@ -427,4 +455,5 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 }
+
 
