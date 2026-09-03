@@ -22,7 +22,8 @@
 '';
 
   programs.nano.enable = false; # disable nano systemwide so vim configuration can apply
-  # Mongodb
+
+   # Mongodb
   services.mongodb = {
   enable = true;
   package = pkgs.mongodb-ce;
@@ -30,19 +31,21 @@
   # Enable Sound
    services.pipewire = { 
     enable = true;
-    extraConfig.pipewire = {
+    #package = pkgs.pipewire;
+    /*extraConfig.pipewire = {
   "98-crackling-fix" = {
     "context.properties" = {
-      "default.clock.quantum" = 2048;
-      "default.clock.min-quantum" = 2048;
-      "default.clock.max-quantum" = 8192;
+      #default.clock.rate = 44100;
+      #default.clock.quantum = 256;
+      default.clock.min-quantum = 1024;
+      #default.clock.max-quantum = 8192;
     };
   };
-};
+};*/
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    jack.enable = true;
+    #jack.enable = true;
 };
   # Bluetooth
   hardware.bluetooth = {
@@ -165,6 +168,8 @@
  };
   # Firewall
   networking.firewall.trustedInterfaces = [ "virbr0" ];
+
+  networking.firewall.checkReversePath = "loose";
   #networking.firewall.allowedTCPPorts = [ 445 139 ];
   # Custom udev rules to have a udev rule for every gpu on pc to let sway use only one of them correctly
   services.udev.extraRules = ''

@@ -12,8 +12,8 @@ imports =
   nix.settings.auto-optimise-store = true;
   # Limiting nix build jobs to avoid out of memory situations
   nix.settings = {
-    cores = 4;
-    max-jobs = 2;
+    cores = 2;
+    max-jobs = 1;
 }; 
   # Garbage Collection of old generations
   nix.gc = {
@@ -27,7 +27,7 @@ imports =
    boot = {
    #kernelParams = [ "quiet" ];
    # By default, the latest LTS linux kernel is installed 
-   #kernelPackages = pkgs.linuxPackages_latest; # The linux kernel to boot with
+   kernelPackages = pkgs.linuxPackages_zen; # The linux kernel to boot with
    # Enable SysRq shortcuts can be used to trigger a more graceful reboot
    kernel.sysctl."kernel.sysrq" = 1;
    supportedFilesystems = [ "nfs" ]; # to have NFS support
@@ -104,6 +104,7 @@ imports =
     "nvidia-persistenced"
     "unrar"
     "mongodb-ce"
+    "vscode"
   ];
   
   system.stateVersion = "25.11"; # Do NOT Change.

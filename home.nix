@@ -29,6 +29,8 @@
     mongosh
     nodejs
     wireguard-tools # needed for split tunneling
+    go
+    gh # Github CLI tool
     # support both 32-bit and 64-bit applications
     wineWow64Packages.stable
     # winetricks (all versions)
@@ -49,8 +51,9 @@
     cheese
     bluejay
     vesktop
+    vscode
   ];
-  # NetworkManager applet
+    # NetworkManager applet
   services.network-manager-applet.enable = true;
   # Kitty 
   programs.kitty = {
@@ -73,7 +76,7 @@
   # Vim
   programs.vim = {
     enable = true;
-    defaultEditor = false;
+    defaultEditor = true;
     extraConfig = ''
       nnoremap <F5> :w<CR>:!g++ % -o %< && ./%<<CR>
       set mouse=a
@@ -222,6 +225,8 @@
 
   nvidia-disable = ''sudo rmmod nvidia_drm nvidia_modeset nvidia; echo "NVIDIA drivers removed"; sudo modprobe -i vfio_pci vfio_pci_core vfio_iommu_type1 vfio; echo "VFIO drivers added"; sudo virsh nodedev-detach pci_0000_01_00_0; echo "GPU detached (now vfio ready)"; echo "COMPLETED! (confirm success with hows-my-gpu)"'';
 };
+  # PATH
+  home.sessionPath = ["$HOME/go/bin"]; # Extra directories to prepend to PATH.
   # GTK
   gtk = {
    enable = true;
@@ -327,6 +332,7 @@
       "${modifier}+Shift+w" = "exec waydroid show-full-ui";
       "${modifier}+Shift+l" = "exec ~/Scripts/awww_randomize.sh";
       "${modifier}+Shift+g" = "exec looking-glass-client";
+      "${modifier}+Shift+m" = "exec tauon";
       "${modifier}+v" = "exec cliphist list | rofi -dmenu -display-columns 2 | cliphist decode | wl-copy";
       "${modifier}+Shift+f" = "floating toggle";
       "${modifier}+Shift+t" = "exec pkexec wg-quick up proton";

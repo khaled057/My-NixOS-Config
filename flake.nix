@@ -13,25 +13,30 @@
      url = "github:Daaboulex/vfio-stealth-nix";
      inputs.nixpkgs.follows = "nixpkgs";
 };*/
+   old-pipewire.url = "github:nixos/nixpkgs/c4013e501c048ae7c4a8940c92837636042bf6c3"; 
 };
 
-  outputs = inputs@{ nixpkgs, home-manager, nix-flatpak, ... }: {
+  outputs = { nixpkgs, home-manager, nix-flatpak, ... }@inputs: {
     nixosConfigurations = {
-        nixos = nixpkgs.lib.nixosSystem {
+
+       nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
           inherit inputs;
 };
+                
         modules = [
           ./configuration.nix
-          /*
-          {
-          nixpkgs.overlays = [ inputs.vfio-stealth.overlays.default ];
-          }
-          inputs.vfio-stealth.nixosModules.default
-          */
           inputs.nixos-vfio.nixosModules.default
           home-manager.nixosModules.home-manager
+          {
+          nixpkgs.overlays = [
+          (final: prev: {
+            pipewire_1_6_5 =
+              inputs.old-pipewire.legacyPackages.${prev.system}.pipewire;
+          })
+        ];
+      }
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
@@ -42,6 +47,6 @@
           }
         ];
       };
-    };
   };
+};
 }
